@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title>osd-html-elements-demo</title>
+        <script src="https://openseadragon.github.io/openseadragon/openseadragon.min.js"></script>
+        <script src="OpenSeadragonHTMLelements.js"></script>
+    </head>
+    <body>
+        <h1>Make Bacon dance!</h1>
+        <!-- The circles are painted by <a href="http://paperjs.org/">Paper.js</a> on top of an
+        <a href="https://openseadragon.github.io/">OpenSeadragon</a> windows by use of the the plugin
+        <a href="https://github.com/eriksjolund/OpenSeadragonPaperjsOverlay">OpenSeadragonPaperjsOverlay</a> -->
+        <br/>
+        <br/>
+        <div id="osd" style="width: 800px; height:600px; border: solid 1px; border-color: black"></div>
+        <script>
+        var duomo = {
+          Image: {
+            xmlns: "http://schemas.microsoft.com/deepzoom/2008",
+            Url: "//openseadragon.github.io/example-images/duomo/duomo_files/",
+            Format: "jpg",
+            Overlap: "2",
+            TileSize: "256",
+            Size: {
+              Width:  "13920",
+              Height: "10200"
+            }
+          }
+        };
+
+        var viewer = OpenSeadragon({
+          id: "osd",
+          prefixUrl: "//openseadragon.github.io/openseadragon/images/",
+          tileSources: duomo
+        });
+
+        // --------------------------------------- //
+
+        hEl = this.viewer.HTMLelements()
+
+        // HTML element with the gif. Could be any other element, another div, iframe with embed video, text editor, image, possibilities are endless!!!!
+        var gif = document.createElement("img")
+        gif.src = "https://i.gifer.com/1fLL.gif"
+        gif.style.width = "100%"
+        gif.style.height = "100%"
+        gif.style.objectFit = "contain"
+
+        hEl.addElement({
+          id: "gif",
+          element: gif,
+          rect: new OpenSeadragon.Rect(9200, 2700, 2000, 2000)
+        })
+
+        var vid = document.createElement("iframe")
+        vid.src = "https://www.youtube.com/embed/QH2-TGUlwu4"
+        vid.style.width = "100%"
+        vid.style.height = "100%"
+        vid.frameBorder = "0"
+        vid.allowFullscreen = true
+
+        var img = document.createElement("img")
+        img.src = "https://cdn.theatlantic.com/static/mt/assets/science/cat_caviar.jpg"
+        img.style.width = "100%"
+        img.style.height = "100%"
+        img.style.objectFit = "contain"
+
+        hEl.addElements([
+          {
+            id: "vid",
+            element: vid,
+            rect: new OpenSeadragon.Rect(2700, 8000, 1920, 1080)
+          },
+          {
+            id: "img",
+            element: img,
+            rect: new OpenSeadragon.Rect(0, 2000, 1000, 3000)
+          }
+        ])
+
+        hEl.removeElementById("vid")
+        hEl.removeElementsById(["img", "gif"])
+        </script>
+    </body>
+</html>
