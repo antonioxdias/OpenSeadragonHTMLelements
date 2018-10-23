@@ -30,38 +30,20 @@
     this.elements = [];
 
     // These handle repositioning the element when interacting with the viewer
-    this.viewer.addHandler("open", function() {self.repositionElement()})
-    this.viewer.addHandler("animation", function () {self.repositionElement()})
-    this.viewer.addHandler("rotate", function() {self.repositionElement()})
+    this.viewer.addHandler("open", function() {repositionElements(self.elements)})
+    this.viewer.addHandler("animation", function () {repositionElements(self.elements)})
+    this.viewer.addHandler("rotate", function() {repositionElements(self.elements)})
   }
     // ----------
   $.hElements.prototype = {
-    // ----------
-    validateElement: function(e) {
-      let isValid = true
-      let errors = []
-      if (!("id" in e)) {
-        isValid = false
-        errors.push("id")
-      }
-      if (!("element" in e)) {
-        isValid = false
-        errors.push("element")
-      }
-      if (!("rect" in e)) {
-        isValid = false
-        errors.push("rect")
-      }
-      if (errors.length !== 0) {
-        console.log("Missing properties", errors.join(", "), ". Element was not added: ", e)
-      }
-      return isValid
-    },
     getElements: function() {
       return this.elements
     },
+    getElementById: function(id) {
+      return this.elements.find(function(e) {return e.id === id});
+    },
     addElement: function(e) {
-      if (this.validateElement(e)) {
+      if (validateElement(e)) {
         let wrapperDiv = document.createElement("div");
         wrapperDiv.style.position = "absolute";
         wrapperDiv.appendChild(e.element);
@@ -77,7 +59,7 @@
       return this.elements
     },
     removeElementById: function(id) {
-      const e = this.elements.find(function(e) {return e.id === id});
+      const e = this.getElementById(id)
       if (e !== null) {
         this.viewer.canvas.removeChild(e.element);
         this.elements.splice(this.elements.indexOf(e), 1);
@@ -90,16 +72,49 @@
       }
       return this.elements
     },
-    repositionElement: function() {
-      for (let e of this.elements) {
-        const newRect = viewer.viewport.viewportToViewerElementRectangle(
-          viewer.viewport.imageToViewportRectangle(e.rect)
+    goToElementLocation: function(id) {
+      const e = this.getElementById(id)
+      if (e !== null) {
+        this.viewer.viewport.fitBoundsWithConstraints(
+          this.viewer.viewport.imageToViewportRectangle(e.rect)
         )
-        e.element.style.left = newRect.x + "px"
-        e.element.style.top = newRect.y + "px"
-        e.element.style.width = newRect.width + "px"
-        e.element.style.height = newRect.height + "px"
       }
     }
   }
 })();
+
+// ----------
+// Helper functions. Not on proptotype
+
+const validateElement = function(e) {
+  let isValid = true
+  let errors = []
+  if (!("id" in e)) {
+    isValid = false
+    errors.push("id")
+  }
+  if (!("element" in e)) {
+    isValid = false
+    errors.push("element")
+  }
+  if (!("rect" in e)) {
+    isValid = false
+    errors.push("rect")
+  }
+  if (errors.length !== 0) {
+    console.log("Missing properties", errors.join(", "), ". Element was not added: ", e)
+  }
+  return isValid
+}
+
+const repositionElements = function(es) {
+  for (let e of es) {
+    const newRect = viewer.viewport.viewportToViewerElementRectangle(
+      viewer.viewport.imageToViewportRectangle(e.rect)
+    )
+    e.element.style.left = newRect.x + "px"
+    e.element.style.top = newRect.y + "px"
+    e.element.style.width = newRect.width + "px"
+    e.element.style.height = newRect.height + "px"
+  }
+}

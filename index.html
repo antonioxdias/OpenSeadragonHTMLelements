@@ -8,12 +8,10 @@
     </head>
     <body>
         <h1>Make Bacon dance!</h1>
-        <!-- The circles are painted by <a href="http://paperjs.org/">Paper.js</a> on top of an
-        <a href="https://openseadragon.github.io/">OpenSeadragon</a> windows by use of the the plugin
-        <a href="https://github.com/eriksjolund/OpenSeadragonPaperjsOverlay">OpenSeadragonPaperjsOverlay</a> -->
         <br/>
         <br/>
         <div id="osd" style="width: 800px; height:600px; border: solid 1px; border-color: black"></div>
+        <button id="b" onclick="hEl.goToElementLocation('vid')">goTo vid</button>
         <script>
         var duomo = {
           Image: {
@@ -45,6 +43,7 @@
         gif.style.width = "100%"
         gif.style.height = "100%"
         gif.style.objectFit = "contain"
+        gif.
 
         hEl.addElement({
           id: "gif",
@@ -69,7 +68,7 @@
           {
             id: "vid",
             element: vid,
-            rect: new OpenSeadragon.Rect(2700, 8000, 1920, 1080)
+            rect: new OpenSeadragon.Rect(2700, 7000, 3840, 2160)
           },
           {
             id: "img",
@@ -78,8 +77,8 @@
           }
         ])
 
-        hEl.removeElementById("vid")
-        hEl.removeElementsById(["img", "gif"])
+        // hEl.removeElementById("vid")
+        // hEl.removeElementsById(["img", "gif"])
         </script>
     </body>
 </html>
