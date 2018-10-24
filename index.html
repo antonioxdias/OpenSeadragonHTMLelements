@@ -46,7 +46,10 @@
         hEl.addElement({
           id: "gif",
           element: gif,
-          rect: new OpenSeadragon.Rect(10000, 4000, 2000, 2000)
+          x: 10000,
+          y: 4000,
+          width: 2000,
+          height: 2000
         })
 
         var vid = document.createElement("iframe")
@@ -56,19 +59,24 @@
 
         var img = document.createElement("img")
         img.src = "https://cdn.theatlantic.com/static/mt/assets/science/cat_caviar.jpg"
-        img.style.objectFit = "contain"
+        // img.style.objectFit = "contain"
 
         hEl.addElements([
           {
             id: "vid",
             element: vid,
-            rect: new OpenSeadragon.Rect(2700, 7000, 3840, 2160)
+            x: 2500,
+            y: 7500,
+            width: 3840,
+            height: 2160
           },
           {
             id: "img",
             element: img,
-            rect: new OpenSeadragon.Rect(0, 0, 3000, 2040),
-            anchor: "origin"
+            x: 0,
+            y: 0,
+            width: 3000,
+            height: 2040
           }
         ])
 
@@ -80,12 +88,14 @@
         hEl.addElement({
           id: "sq",
           element: sq,
-          rect: new OpenSeadragon.Rect(6000, 5500, 4000, 3000),
-          anchor: "origin"
+          x: 4250,
+          y: 4000,
+          width: 4000,
+          height: 3000
         })
 
-        hEl.removeElementById("vid")
-        hEl.removeElementsById(["img", "gif"])
+        // hEl.removeElementById("vid")
+        // hEl.removeElementsById(["img", "gif"])
         </script>
     </body>
 </html>

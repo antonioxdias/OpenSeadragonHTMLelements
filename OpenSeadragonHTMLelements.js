@@ -25,8 +25,7 @@
     // {
     //   id: <string>,
     //   element: <HTMLelement>,
-    //   rect: <OpenSeadragon.Rect> (in image coordinates)
-    //   (optional) anchor: "center"(default) || "origin"
+    //   rect: <OpenSeadragon.Rect> in imageCoordinates
     // }
     this.elements = [];
 
@@ -34,7 +33,6 @@
     this.viewer.addHandler("open", function() {repositionElements(self.elements)})
     this.viewer.addHandler("animation", function () {repositionElements(self.elements)})
     this.viewer.addHandler("rotate", function() {repositionElements(self.elements)})
-    this.viewer.addHandler("", function(ev) {console.log(ev)})
   }
     // ----------
   $.hElements.prototype = {
@@ -52,7 +50,16 @@
         wrapperDiv.style.position = "absolute";
         wrapperDiv.appendChild(e.element);
         this.viewer.canvas.appendChild(wrapperDiv);
-        this.elements.push({...e, element: wrapperDiv});
+        this.elements.push({
+          ...e,
+          element: wrapperDiv,
+          rect: new OpenSeadragon.Rect(
+            e.x + e.width / 2,
+            e.y + e.height / 2,
+            e.width,
+            e.height
+          )
+        });
       }
       return this.elements
     },
@@ -79,37 +86,15 @@
     goToElementLocation: function(id) {
       const e = this.getElementById(id)
       if (e !== null) {
-        const vpRect = this.viewer.viewport.imageToViewportRectangle(e.rect)
-        // const point = flipCheck(i.position, viewerInfo)
-        const pos = viewer.viewport.imageToViewportCoordinates(e.rect.x, e.rect.y)
-        if (e.anchor === "center") {
-          this.viewer.viewport.fitBoundsWithConstraints(new OpenSeadragon.Rect(
-            pos.x - vpRect.width / 2,
-            pos.y - vpRect.height / 2,
-            vpRect.width,
-            vpRect.height
-          ))
-
-        } else if (e.anchor === "origin") {
-          // this.viewer.viewport.fitBoundsWithConstraints(vpRect)
-          // this.viewer.viewport.panTo(new OpenSeadragon.Point(
-          //   pos.x + vpRect.width / 2,
-          //   pos.y + vpRect.height / 2
-          // ))
-          // const point = flipCheck(i.position, viewerInfo)
-          // this.viewer.viewport.fitBoundsWithConstraints(new OpenSeadragon.Rect(
-          //   pos.x,
-          //   pos.y,
-          //   vpRect.width,
-          //   vpRect.height
-          // ))
-          this.viewer.viewport.fitBoundsWithConstraints(new OpenSeadragon.Rect(
-            pos.x - vpRect.width,
-            pos.y - vpRect.height,
-            vpRect.width,
-            vpRect.height
-          ))
-        }
+      const vpRect = this.viewer.viewport.imageToViewportRectangle(e.rect)
+      // const point = flipCheck(i.position, viewerInfo)
+      const vpPos = viewer.viewport.imageToViewportCoordinates(e.rect.x, e.rect.y)
+        this.viewer.viewport.fitBoundsWithConstraints(new OpenSeadragon.Rect(
+          vpPos.x - vpRect.width / 2,
+          vpPos.y - vpRect.height / 2,
+          vpRect.width,
+          vpRect.height
+        ))
       }
     }
   }
@@ -119,30 +104,18 @@
 // Helper functions. Not on proptotype
 
 const validateElement = function(e) {
+  const props = ["id", "element", "x", "y", "width", "height"]
   let isValid = true
-  if (!("anchor" in e)) {
-    e.anchor = "center"
-  }
-
   let errors = []
-  if (!("id" in e)) {
-    isValid = false
-    errors.push("id")
-  }
-  if (!("element" in e)) {
-    isValid = false
-    errors.push("element")
-  }
-  if (!("rect" in e)) {
-    isValid = false
-    errors.push("rect")
+  for (prop of props) {
+    if (!(prop in e)) {
+      isValid = false
+      errors.push(prop)
+    }
   }
   if (errors.length !== 0) {
-    console.log("Missing properties", errors.join(", "), ". Element was not added: ", e)
-  } else if (!e.anchor.match("center|origin")) {
-    console.log("Wrong anchor value. Use 'center' or 'origin'. Element was not added: ", e)
+    console.log("Missing properties " + errors.join(", ") + ". Element was not added: ", e)
   }
-
   return isValid
 }
 
@@ -160,13 +133,8 @@ const repositionElement = function(e) {
   const pos = viewer.viewport.viewportToViewerElementCoordinates(
     viewer.viewport.imageToViewportCoordinates(e.rect.x, e.rect.y)
   )
-  if (e.anchor === "center") {
-    e.element.style.left = pos.x - newRect.width / 2 + "px"
-    e.element.style.top = pos.y - newRect.height / 2 + "px"
-  } else if (e.anchor === "origin") {
-    e.element.style.left = pos.x + "px"
-    e.element.style.top = pos.y + "px"
-  }
+  e.element.style.left = pos.x - newRect.width / 2 + "px"
+  e.element.style.top = pos.y - newRect.height / 2 + "px"
   e.element.style.width = newRect.width + "px"
   e.element.style.height = newRect.height + "px"
 }
