@@ -33,6 +33,7 @@
     this.viewer.addHandler("open", function() {repositionElements(self.elements)})
     this.viewer.addHandler("animation", function () {repositionElements(self.elements)})
     this.viewer.addHandler("rotate", function() {repositionElements(self.elements)})
+    this.viewer.addHandler("flip", function() {repositionElements(self.elements)})
   }
     // ----------
   $.hElements.prototype = {
@@ -87,7 +88,6 @@
       const e = this.getElementById(id)
       if (e !== null) {
       const vpRect = this.viewer.viewport.imageToViewportRectangle(e.rect)
-      // const point = flipCheck(i.position, viewerInfo)
       const vpPos = viewer.viewport.imageToViewportCoordinates(e.rect.x, e.rect.y)
         this.viewer.viewport.fitBoundsWithConstraints(new OpenSeadragon.Rect(
           vpPos.x - vpRect.width / 2,
@@ -103,7 +103,7 @@
 // ----------
 // Helper functions. Not on proptotype
 
-const validateElement = function(e) {
+function validateElement(e) {
   const props = ["id", "element", "x", "y", "width", "height"]
   let isValid = true
   let errors = []
@@ -119,22 +119,50 @@ const validateElement = function(e) {
   return isValid
 }
 
-const repositionElements = function(es) {
+function repositionElements(es) {
   for (let e of es) {
     repositionElement(e)
   }
 }
 
-const repositionElement = function(e) {
+function repositionElement(e) {
   const newRect = viewer.viewport.viewportToViewerElementRectangle(
     viewer.viewport.imageToViewportRectangle(e.rect)
   )
-  // const point = flipCheck(i.position, viewerInfo)
+  const point = viewer.viewport.getFlip() ?
+    flipPoint({x: e.rect.x, y: e.rect.y}, viewer.viewport.getRotation(), viewer.world.getItemAt(0).viewportToImageCoordinates(viewer.viewport.getCenter(true)))
+    : {x: e.rect.x, y: e.rect.y}
   const pos = viewer.viewport.viewportToViewerElementCoordinates(
-    viewer.viewport.imageToViewportCoordinates(e.rect.x, e.rect.y)
+    viewer.viewport.imageToViewportCoordinates(point.x, point.y)
   )
   e.element.style.left = pos.x - newRect.width / 2 + "px"
   e.element.style.top = pos.y - newRect.height / 2 + "px"
   e.element.style.width = newRect.width + "px"
   e.element.style.height = newRect.height + "px"
+}
+
+
+function flipPoint(p, angle, center) {
+  const rotatedPoint = rotatePoint(p, 180 + angle * 2, center)
+  return {x: rotatedPoint.x, y: center.y * 2 - rotatedPoint.y}
+}
+
+function rotatePoint(p, angle, center) {
+  angle = angle * Math.PI / 180
+  let point = center ? subtractPoints(p, center) : p,
+      sin = Math.sin(angle),
+      cos = Math.cos(angle)
+  point = {
+    x: point.x * cos - point.y * sin,
+    y: point.x * sin + point.y * cos
+  }
+  return center ? addPoints(point, center) : point
+}
+
+function subtractPoints(p1, p2) {
+  return {x: p1.x - p2.x, y: p1.y - p2.y}
+}
+
+function addPoints(p1, p2) {
+  return {x: p1.x + p2.x, y: p1.y + p2.y}
 }
