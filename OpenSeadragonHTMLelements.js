@@ -25,7 +25,8 @@
     // {
     //   id: <string>,
     //   element: <HTMLelement>,
-    //   rect: <OpenSeadragon.Rect> in imageCoordinates
+    //   rect: <OpenSeadragon.Rect> in imageCoordinates,
+    //   (optional) fontSize: number
     // }
     this.elements = [];
 
@@ -116,6 +117,9 @@ function validateElement(e) {
   if (errors.length !== 0) {
     console.log("Missing properties " + errors.join(", ") + ". Element was not added: ", e)
   }
+  if ("fontSize" in e && e.element.style.transition === "") {
+    e.element.style.transition = "all .2s ease"
+  }
   return isValid
 }
 
@@ -135,10 +139,17 @@ function repositionElement(e) {
   const pos = viewer.viewport.viewportToViewerElementCoordinates(
     viewer.viewport.imageToViewportCoordinates(point.x, point.y)
   )
+
   e.element.style.left = pos.x - newRect.width / 2 + "px"
   e.element.style.top = pos.y - newRect.height / 2 + "px"
   e.element.style.width = newRect.width + "px"
   e.element.style.height = newRect.height + "px"
+
+  if ("fontSize" in e) {
+    textbox.style.fontSize = (
+      e.fontSize * viewer.viewport.getZoom(true) / viewer.viewport.getHomeZoom()
+    ) + "px"
+  }
 }
 
 

@@ -47,7 +47,7 @@
           id: "gif",
           element: gif,
           x: 10000,
-          y: 4000,
+          y: 7000,
           width: 2000,
           height: 2000
         })
@@ -58,8 +58,7 @@
         vid.allowFullscreen = true
 
         var img = document.createElement("img")
-        img.src = "https://cdn.theatlantic.com/static/mt/assets/science/cat_caviar.jpg"
-        // img.style.objectFit = "contain"
+        img.src = "https://i.stack.imgur.com/KRxDx.png"
 
         hEl.addElements([
           {
@@ -82,8 +81,7 @@
 
         var sq = document.createElement("div")
         sq.style.backgroundColor = "rgba(40,200,100,0.2)"
-        sq.style.border = "solid 1px"
-        sq.style.borderColor = "yellow"
+        sq.style.border = "solid 1px yellow"
 
         hEl.addElement({
           id: "sq",
@@ -92,6 +90,22 @@
           y: 4000,
           width: 4000,
           height: 3000
+        })
+
+        var textbox = document.createElement("div")
+        textbox.style.backgroundColor = "rgba(200,200,200,0.8)"
+        textbox.style.border = "solid 1px black"
+        textbox.style.borderRadius = "8px"
+        textbox.innerHTML = "ipsum dolor amet brisket pork spare ribs drumstick cupim. Venison tri-tip shankle strip steak, short loin ball tip drumstick bresaola porchetta. Turducken pork chop drumstick meatball boudin spare ribs. Kevin buffalo kielbasa ham hock beef ribs beef landjaeger capicola bacon meatball jowl."
+
+        hEl.addElement({
+          id: "textbox",
+          element: textbox,
+          x: 9500,
+          y: 500,
+          width: 4000,
+          height: 2500,
+          fontSize: 14
         })
 
         // hEl.removeElementById("vid")
