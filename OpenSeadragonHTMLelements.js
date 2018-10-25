@@ -1,25 +1,25 @@
 (function() {
-  var $ = window.OpenSeadragon;
+  var $ = window.OpenSeadragon
 
   if (!$) {
-      $ = require('openseadragon');
+      $ = require('openseadragon')
       if (!$) {
-          throw new Error('OpenSeadragon is missing.');
+          throw new Error('OpenSeadragon is missing.')
       }
   }
   // ----------
   $.Viewer.prototype.HTMLelements = function(options) {
     if (!this.elementsInstance || options) {
-      options = options || {};
-      options.viewer = this;
-      this.elementsInstance = new $.hElements(options);
+      options = options || {}
+      options.viewer = this
+      this.elementsInstance = new $.hElements(options)
     }
-    return this.elementsInstance;
-  };
+    return this.elementsInstance
+  }
 
   $.hElements = function (options) {
-    var self = this;
-    this.viewer = options.viewer;
+    var self = this
+    this.viewer = options.viewer
 
     // elements is an array of objects in the format:
     // {
@@ -28,7 +28,7 @@
     //   rect: <OpenSeadragon.Rect> in imageCoordinates,
     //   (optional) fontSize: number
     // }
-    this.elements = [];
+    this.elements = []
 
     for (h of ["open", "animation", "rotate", "flip", "resize"]) {
       this.viewer.addHandler(h, function() {repositionElements(self.elements)})
@@ -40,16 +40,16 @@
       return this.elements
     },
     getElementById: function(id) {
-      return this.elements.find(function(e) {return e.id === id});
+      return this.elements.find(function(e) {return e.id === id})
     },
     addElement: function(e) {
       if (validateElement(e)) {
         e.element.style.width = "100%"
         e.element.style.height = "100%"
-        let wrapperDiv = document.createElement("div");
-        wrapperDiv.style.position = "absolute";
-        wrapperDiv.appendChild(e.element);
-        this.viewer.canvas.appendChild(wrapperDiv);
+        let wrapperDiv = document.createElement("div")
+        wrapperDiv.style.position = "absolute"
+        wrapperDiv.appendChild(e.element)
+        this.viewer.canvas.appendChild(wrapperDiv)
         this.elements.push({
           ...e,
           element: wrapperDiv,
@@ -59,7 +59,7 @@
             e.width,
             e.height
           )
-        });
+        })
       }
       return this.elements
     },
@@ -72,8 +72,8 @@
     removeElementById: function(id) {
       const e = this.getElementById(id)
       if (e !== null) {
-        this.viewer.canvas.removeChild(e.element);
-        this.elements.splice(this.elements.indexOf(e), 1);
+        this.viewer.canvas.removeChild(e.element)
+        this.elements.splice(this.elements.indexOf(e), 1)
       }
       return this.elements
     },
@@ -97,7 +97,7 @@
       }
     }
   }
-})();
+})()
 
 // ----------
 // Helper functions. Not on proptotype
