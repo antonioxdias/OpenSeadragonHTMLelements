@@ -1,6 +1,6 @@
 # OpenSeadragonHTMLelements
 
-Plugin to add HTMLelement overlaying capability to [OpenSeadragon]().
+Plugin to add HTMLelement overlaying capability to [OpenSeadragon](https://github.com/openseadragon/openseadragon).
 This allows for elements to be panned, zoomed, rotated and flipped with the viewer, mantaining their position and size ratio.
 
 Check out a [demo]()
