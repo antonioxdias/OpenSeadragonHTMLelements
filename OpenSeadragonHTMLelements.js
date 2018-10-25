@@ -30,11 +30,9 @@
     // }
     this.elements = [];
 
-    // These handle repositioning the element when interacting with the viewer
-    this.viewer.addHandler("open", function() {repositionElements(self.elements)})
-    this.viewer.addHandler("animation", function () {repositionElements(self.elements)})
-    this.viewer.addHandler("rotate", function() {repositionElements(self.elements)})
-    this.viewer.addHandler("flip", function() {repositionElements(self.elements)})
+    for (h of ["open", "animation", "rotate", "flip", "resize"]) {
+      this.viewer.addHandler(h, function() {repositionElements(self.elements)})
+    }
   }
     // ----------
   $.hElements.prototype = {
