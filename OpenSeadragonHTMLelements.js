@@ -139,7 +139,7 @@ function repositionElement(e) {
   e.element.style.width = newRect.width + "px"
   e.element.style.height = newRect.height + "px"
   if ("fontSize" in e) {
-    textbox.style.fontSize = (
+    e.element.style.fontSize = (
       e.fontSize * viewer.viewport.getZoom(true) / viewer.viewport.getHomeZoom()
     ) + "px"
   }
