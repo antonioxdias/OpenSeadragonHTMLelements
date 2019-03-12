@@ -31,7 +31,7 @@
     this.elements = []
 
     for (h of ["open", "animation", "rotate", "flip", "resize"]) {
-      this.viewer.addHandler(h, function() {repositionElements(self.elements)})
+      this.viewer.addHandler(h, function() {repositionElements(self.elements, self.viewer)})
     }
   }
     // ----------
@@ -118,13 +118,13 @@ function validateElement(e) {
   return isValid
 }
 
-function repositionElements(es) {
+function repositionElements(es, viewer) {
   for (let e of es) {
-    repositionElement(e)
+    repositionElement(e, viewer)
   }
 }
 
-function repositionElement(e) {
+function repositionElement(e, viewer) {
   const newRect = viewer.viewport.viewportToViewerElementRectangle(
     viewer.viewport.imageToViewportRectangle(e.rect)
   )
