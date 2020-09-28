@@ -15,13 +15,19 @@
       <div>
         <p>Plugin to add HTMLelement overlaying capability to <a href="https://github.com/openseadragon/openseadragon">OpenSeadragon</a>.</p>
         <p>This allows for elements to be panned, zoomed, rotated and flipped with the viewer, mantaining their position and size ratio.</p>
-        <div style="display: flex; justify-content: center;">
-          <span>goTo: </span>
-          <button onclick="hEl.goToElementLocation('sq')">div</button>
-          <button onclick="hEl.goToElementLocation('vid')">vid</button>
-          <button onclick="hEl.goToElementLocation('img')">img</button>
-          <button onclick="hEl.goToElementLocation('textbox')">textbox</button>
-          <button onclick="hEl.goToElementLocation('gif')">gif</button>
+        <div style="display: flex; justify-content: space-around;">
+          <div>
+            <span>goTo: </span>
+            <button onclick="hEl.goToElementLocation('sq')">div</button>
+            <button onclick="hEl.goToElementLocation('vid')">vid</button>
+            <button onclick="hEl.goToElementLocation('img')">img</button>
+            <button onclick="hEl.goToElementLocation('textbox')">textbox</button>
+            <button onclick="hEl.goToElementLocation('gif')">gif</button>
+          </div>
+          <div>
+              <span>move: </span>
+              <button onclick="dacingBacon()">gif</button>
+          </div>
         </div>
         <div id="osd" style="width: 800px; height:600px; border: solid 1px black;"></div>
         <br/>
@@ -123,6 +129,12 @@
         height: 2500,
         fontSize: 14
       })
+
+      var dacingBacon = function () {
+        const x = Math.floor(Math.random() * 10000)
+        const y = Math.floor(Math.random() * 10000)
+        hEl.moveElement('gif', x, y)
+      }
     </script>
   </body>
 </html>

@@ -86,14 +86,21 @@
     goToElementLocation: function(id) {
       const e = this.getElementById(id)
       if (e !== null) {
-      const vpRect = this.viewer.viewport.imageToViewportRectangle(e.rect)
-      const vpPos = viewer.viewport.imageToViewportCoordinates(e.rect.x, e.rect.y)
+        const vpRect = this.viewer.viewport.imageToViewportRectangle(e.rect)
+        const vpPos = viewer.viewport.imageToViewportCoordinates(e.rect.x, e.rect.y)
         this.viewer.viewport.fitBoundsWithConstraints(new OpenSeadragon.Rect(
           vpPos.x - vpRect.width / 2,
           vpPos.y - vpRect.height / 2,
           vpRect.width,
           vpRect.height
         ))
+      }
+    },
+    moveElement: function(id, x, y) {
+      const e = this.getElementById(id)
+      if (e !== null) {
+        e.rect = new OpenSeadragon.Rect(x, y, e.width, e.height)
+        repositionElement(e, this.viewer)
       }
     }
   }
