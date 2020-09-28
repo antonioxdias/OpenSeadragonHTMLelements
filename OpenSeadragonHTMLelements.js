@@ -99,7 +99,12 @@
     moveElement: function(id, x, y) {
       const e = this.getElementById(id)
       if (e !== null) {
-        e.rect = new OpenSeadragon.Rect(x, y, e.width, e.height)
+        e.rect = new OpenSeadragon.Rect(
+          x + e.width / 2,
+          y + e.height / 2,
+          e.width,
+          e.height
+        )
         repositionElement(e, this.viewer)
       }
     }
