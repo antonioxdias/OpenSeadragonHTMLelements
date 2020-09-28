@@ -6,23 +6,25 @@
     <script src="https://openseadragon.github.io/openseadragon/openseadragon.min.js"></script>
     <script src="OpenSeadragonHTMLelements.js"></script>
   </head>
-  <body style="display: flex; justify-content: center; background: #121621">
-    <div style="position: fixed; background: #eee; height: 100%; box-shadow: 0 4px 8px 0 rgba(200, 200, 200, 0.6), 0 6px 20px 0 rgba(200, 200, 200, 0.6);">
-      <div style="display: flex; justify-content: center; align-items: flex-end; background: blanchedalmond">
+  <body style="background: #121621; margin: 0;">
+    <div style="margin: auto; max-width: 800px; background: #eee;">
+      <div style="display: flex; justify-content: center; align-items: flex-end;">
         <h1>OpenSeadragonHTMLelements plugin demo</h1>
         <span>Check out on <a href="https://github.com/antonioxdias/OpenSeadragonHTMLelements">github</a></span>
       </div>
       <div>
         <p>Plugin to add HTMLelement overlaying capability to <a href="https://github.com/openseadragon/openseadragon">OpenSeadragon</a>.</p>
         <p>This allows for elements to be panned, zoomed, rotated and flipped with the viewer, mantaining their position and size ratio.</p>
+        <div style="display: flex; justify-content: center;">
+          <span>goTo: </span>
+          <button onclick="hEl.goToElementLocation('sq')">div</button>
+          <button onclick="hEl.goToElementLocation('vid')">vid</button>
+          <button onclick="hEl.goToElementLocation('img')">img</button>
+          <button onclick="hEl.goToElementLocation('textbox')">textbox</button>
+          <button onclick="hEl.goToElementLocation('gif')">gif</button>
+        </div>
         <div id="osd" style="width: 800px; height:600px; border: solid 1px black;"></div>
         <br/>
-        <span>goTo: </span>
-        <button onclick="hEl.goToElementLocation('sq')">div</button>
-        <button onclick="hEl.goToElementLocation('vid')">vid</button>
-        <button onclick="hEl.goToElementLocation('img')">img</button>
-        <button onclick="hEl.goToElementLocation('textbox')">textbox</button>
-        <button onclick="hEl.goToElementLocation('gif')">gif</button>
       </div>
     </div>
     <script>
