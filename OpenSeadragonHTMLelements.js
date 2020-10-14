@@ -89,9 +89,14 @@
       if (e !== null) {
         const vpRect = this.viewer.viewport.imageToViewportRectangle(e.rect)
         const vpPos = viewer.viewport.imageToViewportCoordinates(e.rect.x, e.rect.y)
-        if("animation" in e && e.animation == 'pan'){
-          this.viewer.viewport.panTo((new OpenSeadragon.Point(vpPos.x - vpRect.width / 2, vpPos.y - vpRect.height / 2)), false)
-        }else{
+        if ("animation" in e && e.animation == 'pan'){
+          this.viewer.viewport.panTo(new OpenSeadragon.Point(
+              vpPos.x - vpRect.width / 2,
+              vpPos.y - vpRect.height / 2
+            ),
+            false
+          )
+        } else {
           this.viewer.viewport.fitBoundsWithConstraints(new OpenSeadragon.Rect(
               vpPos.x - vpRect.width / 2,
               vpPos.y - vpRect.height / 2,
