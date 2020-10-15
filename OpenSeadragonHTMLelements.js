@@ -27,7 +27,6 @@
     //   element: <HTMLelement>,
     //   rect: <OpenSeadragon.Rect> in imageCoordinates,
     //   (optional) fontSize: number
-    //   (optional) animation: "zoom"|"pan"
     // }
     this.elements = []
 
@@ -84,15 +83,16 @@
       }
       return this.elements
     },
-    goToElementLocation: function(id) {
+    goToElementLocation: function(id, panOnly) {
+      panOnly = (typeof panOnly !== 'undefined') ?  panOnly : false
       const e = this.getElementById(id)
       if (e !== null) {
         const vpRect = this.viewer.viewport.imageToViewportRectangle(e.rect)
         const vpPos = viewer.viewport.imageToViewportCoordinates(e.rect.x, e.rect.y)
-        if ("animation" in e && e.animation == 'pan'){
+        if (panOnly){
           this.viewer.viewport.panTo(new OpenSeadragon.Point(
-              vpPos.x - vpRect.width / 2,
-              vpPos.y - vpRect.height / 2
+              vpPos.x,
+              vpPos.y
             ),
             false
           )

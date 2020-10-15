@@ -23,14 +23,11 @@ hEl.addElement({
   y: 500,
   width: 4000,
   height: 2500,
-  (optional)fontSize: 14,
-  (optional)animation: "zoom"|"pan"
+  (optional)fontSize: 14
 })
 `````
 
 Optionally, for elements with text, a font size can be provided granting zoom in/out properties to the text. However, this is strongly unadvised, as changing font size on the fly causes a bad case of CSS jitter, seemingly unavoidable. It is advised that any text be converted into an image, for smoother experience.
-
-Optionally, an animation style can be added to pan to the element location or zoom in and fit it within the viewport.
 
 The following methods are provided, to be called on the HTMLelements object:
 
@@ -54,6 +51,7 @@ removeElementById(id: <string>)
 removeElementsById(ids: Array<string>)
 // removes all elements that match the given ids
 
-goToElementLocation(id: <string>)
+goToElementLocation(id: <string> [, panOnly: <boolean>])
 // fit viewer bounds to match the element
+// panOnly is an optional parameter that when set to true, the overlay will be centered without zooming
 `````
