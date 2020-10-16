@@ -83,17 +83,27 @@
       }
       return this.elements
     },
-    goToElementLocation: function(id) {
+    goToElementLocation: function(id, panOnly) {
+      panOnly = (typeof panOnly !== 'undefined') ?  panOnly : false
       const e = this.getElementById(id)
       if (e !== null) {
         const vpRect = this.viewer.viewport.imageToViewportRectangle(e.rect)
         const vpPos = viewer.viewport.imageToViewportCoordinates(e.rect.x, e.rect.y)
-        this.viewer.viewport.fitBoundsWithConstraints(new OpenSeadragon.Rect(
-          vpPos.x - vpRect.width / 2,
-          vpPos.y - vpRect.height / 2,
-          vpRect.width,
-          vpRect.height
-        ))
+        if (panOnly){
+          this.viewer.viewport.panTo(new OpenSeadragon.Point(
+              vpPos.x,
+              vpPos.y
+            ),
+            false
+          )
+        } else {
+          this.viewer.viewport.fitBoundsWithConstraints(new OpenSeadragon.Rect(
+              vpPos.x - vpRect.width / 2,
+              vpPos.y - vpRect.height / 2,
+              vpRect.width,
+              vpRect.height
+          ))
+        }
       }
     },
     moveElement: function(id, x, y) {

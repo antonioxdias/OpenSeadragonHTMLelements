@@ -51,6 +51,7 @@ removeElementById(id: <string>)
 removeElementsById(ids: Array<string>)
 // removes all elements that match the given ids
 
-goToElementLocation(id: <string>)
+goToElementLocation(id: <string> [, panOnly: <boolean>])
 // fit viewer bounds to match the element
+// panOnly is an optional parameter that when set to true, the overlay will be centered without zooming
 `````
