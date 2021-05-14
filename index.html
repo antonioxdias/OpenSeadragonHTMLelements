@@ -1,56 +1,76 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>osd-html-elements-demo</title>
     <script src="https://openseadragon.github.io/openseadragon/openseadragon.min.js"></script>
     <script src="OpenSeadragonHTMLelements.js"></script>
   </head>
-  <body style="background: #121621; margin: 0;">
-    <div style="margin: auto; max-width: 800px; background: #eee;">
-      <div style="display: flex; justify-content: center; align-items: flex-end;">
+  <body style="background: #121621; margin: 0">
+    <div style="margin: auto; max-width: 800px; background: #eee">
+      <div
+        style="display: flex; justify-content: center; align-items: flex-end"
+      >
         <h1>OpenSeadragonHTMLelements plugin demo</h1>
-        <span>Check out on <a href="https://github.com/antonioxdias/OpenSeadragonHTMLelements">github</a></span>
+        <span
+          >Check out on
+          <a href="https://github.com/antonioxdias/OpenSeadragonHTMLelements"
+            >github</a
+          ></span
+        >
       </div>
       <div>
-        <p>Plugin to add HTMLelement overlaying capability to <a href="https://github.com/openseadragon/openseadragon">OpenSeadragon</a>.</p>
-        <p>This allows for elements to be panned, zoomed, rotated and flipped with the viewer, mantaining their position and size ratio.</p>
-        <div style="display: flex; justify-content: space-around;">
+        <p>
+          Plugin to add HTMLelement overlaying capability to
+          <a href="https://github.com/openseadragon/openseadragon"
+            >OpenSeadragon</a
+          >.
+        </p>
+        <p>
+          This allows for elements to be panned, zoomed, rotated and flipped
+          with the viewer, mantaining their position and size ratio.
+        </p>
+        <div style="display: flex; justify-content: space-around">
           <div>
             <span>goTo: </span>
             <button onclick="hEl.goToElementLocation('sq')">div</button>
             <button onclick="hEl.goToElementLocation('vid')">vid</button>
             <button onclick="hEl.goToElementLocation('img')">img</button>
-            <button onclick="hEl.goToElementLocation('textbox')">textbox</button>
+            <button onclick="hEl.goToElementLocation('textbox')">
+              textbox
+            </button>
             <button onclick="hEl.goToElementLocation('gif')">gif</button>
           </div>
           <div>
-              <span>move: </span>
-              <button onclick="dacingBacon()">gif</button>
+            <span>move: </span>
+            <button onclick="dacingBacon()">gif</button>
           </div>
         </div>
-        <div id="osd" style="width: 800px; height:600px; border: solid 1px black;"></div>
-        <br/>
+        <div
+          id="osd"
+          style="width: 800px; height: 600px; border: solid 1px black"
+        ></div>
+        <br />
       </div>
     </div>
     <script>
       var duomo = {
         Image: {
-          xmlns: "http://schemas.microsoft.com/deepzoom/2008",
-          Url: "//openseadragon.github.io/example-images/duomo/duomo_files/",
-          Format: "jpg",
-          Overlap: "2",
-          TileSize: "256",
+          xmlns: 'http://schemas.microsoft.com/deepzoom/2008',
+          Url: '//openseadragon.github.io/example-images/duomo/duomo_files/',
+          Format: 'jpg',
+          Overlap: '2',
+          TileSize: '256',
           Size: {
-            Width:  "13920",
-            Height: "10200"
+            Width: '13920',
+            Height: '10200'
           }
         }
       }
 
       var viewer = OpenSeadragon({
-        id: "osd",
-        prefixUrl: "//openseadragon.github.io/openseadragon/images/",
+        id: 'osd',
+        prefixUrl: '//openseadragon.github.io/openseadragon/images/',
         tileSources: duomo,
         showRotationControl: true,
         showFlipControl: true
@@ -61,12 +81,12 @@
       var hEl = viewer.HTMLelements()
 
       // HTML element with the gif. Could be any other element, another div, iframe with embed video, text editor, image, possibilities are endless!!!!
-      var gif = document.createElement("img")
-      gif.src = "https://i.gifer.com/1fLL.gif"
-      gif.style.objectFit = "contain"
+      var gif = document.createElement('img')
+      gif.src = 'https://i.gifer.com/1fLL.gif'
+      gif.style.objectFit = 'contain'
 
       hEl.addElement({
-        id: "gif",
+        id: 'gif',
         element: gif,
         x: 10000,
         y: 7000,
@@ -74,17 +94,17 @@
         height: 2000
       })
 
-      var vid = document.createElement("iframe")
-      vid.src = "https://www.youtube.com/embed/a3ICNMQW7Ok"
-      vid.frameBorder = "0"
+      var vid = document.createElement('iframe')
+      vid.src = 'https://www.youtube.com/embed/a3ICNMQW7Ok'
+      vid.frameBorder = '0'
       vid.allowFullscreen = true
 
-      var img = document.createElement("img")
-      img.src = "https://i.stack.imgur.com/KRxDx.png"
+      var img = document.createElement('img')
+      img.src = 'https://i.stack.imgur.com/KRxDx.png'
 
       hEl.addElements([
         {
-          id: "vid",
+          id: 'vid',
           element: vid,
           x: 500,
           y: 7500,
@@ -92,7 +112,7 @@
           height: 2160
         },
         {
-          id: "img",
+          id: 'img',
           element: img,
           x: 0,
           y: 0,
@@ -101,12 +121,12 @@
         }
       ])
 
-      var sq = document.createElement("div")
-      sq.style.backgroundColor = "rgba(40,200,100,0.2)"
-      sq.style.border = "solid 1px yellow"
+      var sq = document.createElement('div')
+      sq.style.backgroundColor = 'rgba(40,200,100,0.2)'
+      sq.style.border = 'solid 1px yellow'
 
       hEl.addElement({
-        id: "sq",
+        id: 'sq',
         element: sq,
         x: 4250,
         y: 4000,
@@ -114,21 +134,26 @@
         height: 3000
       })
 
-      var textbox = document.createElement("div")
-      textbox.style.backgroundColor = "rgba(200,200,200,0.8)"
-      textbox.style.border = "solid 1px black"
-      textbox.style.borderRadius = "8px"
-      textbox.innerHTML = "ipsum dolor amet brisket pork spare ribs drumstick cupim. Turducken pork chop drumstick meatball boudin spare ribs."
+      var textbox = document.createElement('div')
+      textbox.style.backgroundColor = 'rgba(200,200,200,0.8)'
+      textbox.style.border = 'solid 1px black'
+      textbox.style.borderRadius = '8px'
+      textbox.innerHTML =
+        'ipsum dolor amet brisket pork spare ribs drumstick cupim. Turducken pork chop drumstick meatball boudin spare ribs.'
 
-      hEl.addElement({
-        id: "textbox",
-        element: textbox,
-        x: 9500,
-        y: 500,
-        width: 4000,
-        height: 2500,
-        fontSize: 14
-      })
+      setTimeout(
+        () =>
+          hEl.addElement({
+            id: 'textbox',
+            element: textbox,
+            x: 9500,
+            y: 500,
+            width: 4000,
+            height: 2500,
+            fontSize: 14
+          }),
+        5000
+      )
 
       var dacingBacon = function () {
         const x = Math.floor(Math.random() * 10000)

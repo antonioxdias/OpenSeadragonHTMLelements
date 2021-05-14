@@ -1,14 +1,14 @@
-(function() {
+;(function () {
   var $ = window.OpenSeadragon
 
   if (!$) {
-      $ = require('openseadragon')
-      if (!$) {
-          throw new Error('OpenSeadragon is missing.')
-      }
+    $ = require('openseadragon')
+    if (!$) {
+      throw new Error('OpenSeadragon is missing.')
+    }
   }
   // ----------
-  $.Viewer.prototype.HTMLelements = function(options) {
+  $.Viewer.prototype.HTMLelements = function (options) {
     if (!this.elementsInstance || options) {
       options = options || {}
       options.viewer = this
@@ -30,27 +30,32 @@
     // }
     this.elements = []
 
-    for (h of ["open", "animation", "rotate", "flip", "resize"]) {
-      this.viewer.addHandler(h, function() {repositionElements(self.elements, self.viewer)})
+    for (h of ['open', 'animation', 'rotate', 'flip', 'resize']) {
+      this.viewer.addHandler(h, function () {
+        repositionElements(self.elements, self.viewer)
+      })
     }
   }
-    // ----------
+  // ----------
   $.hElements.prototype = {
-    getElements: function() {
+    getElements: function () {
       return this.elements
     },
-    getElementById: function(id) {
-      return this.elements.find(function(e) {return e.id === id})
+    getElementById: function (id) {
+      return this.elements.find(function (e) {
+        return e.id === id
+      })
     },
-    addElement: function(e) {
+    addElement: function (e) {
       if (validateElement(e)) {
-        e.element.style.width = "100%"
-        e.element.style.height = "100%"
-        let wrapperDiv = document.createElement("div")
-        wrapperDiv.style.position = "absolute"
+        e.element.style.width = '100%'
+        e.element.style.height = '100%'
+        let wrapperDiv = document.createElement('div')
+        wrapperDiv.style.position = 'absolute'
         wrapperDiv.appendChild(e.element)
         this.viewer.canvas.appendChild(wrapperDiv)
-        this.elements.push({
+
+        const el = {
           ...e,
           element: wrapperDiv,
           rect: new OpenSeadragon.Rect(
@@ -59,17 +64,19 @@
             e.width,
             e.height
           )
-        })
+        }
+        this.elements.push(el)
+        repositionElement(el, this.viewer)
       }
       return this.elements
     },
-    addElements: function(es) {
+    addElements: function (es) {
       for (let e of es) {
         this.addElement(e)
       }
       return this.elements
     },
-    removeElementById: function(id) {
+    removeElementById: function (id) {
       const e = this.getElementById(id)
       if (e !== null) {
         this.viewer.canvas.removeChild(e.element)
@@ -77,36 +84,39 @@
       }
       return this.elements
     },
-    removeElementsById: function(ids) {
+    removeElementsById: function (ids) {
       for (let id of ids) {
         this.removeElementById(id)
       }
       return this.elements
     },
-    goToElementLocation: function(id, panOnly) {
-      panOnly = (typeof panOnly !== 'undefined') ?  panOnly : false
+    goToElementLocation: function (id, panOnly) {
+      panOnly = typeof panOnly !== 'undefined' ? panOnly : false
       const e = this.getElementById(id)
       if (e !== null) {
         const vpRect = this.viewer.viewport.imageToViewportRectangle(e.rect)
-        const vpPos = viewer.viewport.imageToViewportCoordinates(e.rect.x, e.rect.y)
-        if (panOnly){
-          this.viewer.viewport.panTo(new OpenSeadragon.Point(
-              vpPos.x,
-              vpPos.y
-            ),
+        const vpPos = viewer.viewport.imageToViewportCoordinates(
+          e.rect.x,
+          e.rect.y
+        )
+        if (panOnly) {
+          this.viewer.viewport.panTo(
+            new OpenSeadragon.Point(vpPos.x, vpPos.y),
             false
           )
         } else {
-          this.viewer.viewport.fitBoundsWithConstraints(new OpenSeadragon.Rect(
+          this.viewer.viewport.fitBoundsWithConstraints(
+            new OpenSeadragon.Rect(
               vpPos.x - vpRect.width / 2,
               vpPos.y - vpRect.height / 2,
               vpRect.width,
               vpRect.height
-          ))
+            )
+          )
         }
       }
     },
-    moveElement: function(id, x, y) {
+    moveElement: function (id, x, y) {
       const e = this.getElementById(id)
       if (e !== null) {
         e.rect = new OpenSeadragon.Rect(
@@ -125,7 +135,7 @@
 // Helper functions. Not on proptotype
 
 function validateElement(e) {
-  const props = ["id", "element", "x", "y", "width", "height"]
+  const props = ['id', 'element', 'x', 'y', 'width', 'height']
   let isValid = true
   let errors = []
   for (prop of props) {
@@ -135,7 +145,10 @@ function validateElement(e) {
     }
   }
   if (errors.length !== 0) {
-    console.log("Missing properties " + errors.join(", ") + ". Element was not added: ", e)
+    console.log(
+      'Missing properties ' + errors.join(', ') + '. Element was not added: ',
+      e
+    )
   }
   return isValid
 }
@@ -150,34 +163,40 @@ function repositionElement(e, viewer) {
   const newRect = viewer.viewport.viewportToViewerElementRectangle(
     viewer.viewport.imageToViewportRectangle(e.rect)
   )
-  const point = viewer.viewport.getFlip() ?
-    flipPoint({x: e.rect.x, y: e.rect.y}, viewer.viewport.getRotation(), viewer.world.getItemAt(0).viewportToImageCoordinates(viewer.viewport.getCenter(true)))
-    : {x: e.rect.x, y: e.rect.y}
+  const point = viewer.viewport.getFlip()
+    ? flipPoint(
+        { x: e.rect.x, y: e.rect.y },
+        viewer.viewport.getRotation(),
+        viewer.world
+          .getItemAt(0)
+          .viewportToImageCoordinates(viewer.viewport.getCenter(true))
+      )
+    : { x: e.rect.x, y: e.rect.y }
   const pos = viewer.viewport.viewportToViewerElementCoordinates(
     viewer.viewport.imageToViewportCoordinates(point.x, point.y)
   )
-  e.element.style.left = pos.x - newRect.width / 2 + "px"
-  e.element.style.top = pos.y - newRect.height / 2 + "px"
-  e.element.style.width = newRect.width + "px"
-  e.element.style.height = newRect.height + "px"
-  if ("fontSize" in e) {
-    e.element.style.fontSize = (
-      e.fontSize * viewer.viewport.getZoom(true) / viewer.viewport.getHomeZoom()
-    ) + "px"
+  e.element.style.left = pos.x - newRect.width / 2 + 'px'
+  e.element.style.top = pos.y - newRect.height / 2 + 'px'
+  e.element.style.width = newRect.width + 'px'
+  e.element.style.height = newRect.height + 'px'
+  if ('fontSize' in e) {
+    e.element.style.fontSize =
+      (e.fontSize * viewer.viewport.getZoom(true)) /
+        viewer.viewport.getHomeZoom() +
+      'px'
   }
 }
 
-
 function flipPoint(p, angle, center) {
   const rotatedPoint = rotatePoint(p, 180 + angle * 2, center)
-  return {x: rotatedPoint.x, y: center.y * 2 - rotatedPoint.y}
+  return { x: rotatedPoint.x, y: center.y * 2 - rotatedPoint.y }
 }
 
 function rotatePoint(p, angle, center) {
-  angle = angle * Math.PI / 180
+  angle = (angle * Math.PI) / 180
   let point = center ? subtractPoints(p, center) : p,
-      sin = Math.sin(angle),
-      cos = Math.cos(angle)
+    sin = Math.sin(angle),
+    cos = Math.cos(angle)
   point = {
     x: point.x * cos - point.y * sin,
     y: point.x * sin + point.y * cos
@@ -186,9 +205,9 @@ function rotatePoint(p, angle, center) {
 }
 
 function subtractPoints(p1, p2) {
-  return {x: p1.x - p2.x, y: p1.y - p2.y}
+  return { x: p1.x - p2.x, y: p1.y - p2.y }
 }
 
 function addPoints(p1, p2) {
-  return {x: p1.x + p2.x, y: p1.y + p2.y}
+  return { x: p1.x + p2.x, y: p1.y + p2.y }
 }
