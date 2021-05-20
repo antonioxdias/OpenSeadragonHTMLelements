@@ -94,11 +94,9 @@
       panOnly = typeof panOnly !== 'undefined' ? panOnly : false
       const e = this.getElementById(id)
       if (e !== null) {
-        const vpRect = this.viewer.viewport.imageToViewportRectangle(e.rect)
-        const vpPos = viewer.viewport.imageToViewportCoordinates(
-          e.rect.x,
-          e.rect.y
-        )
+        const tiledImage = this.viewer.world.getItemAt(0)
+        const vpRect = tiledImage.imageToViewportRectangle(e.rect)
+        const vpPos = tiledImage.imageToViewportCoordinates(e.rect.x, e.rect.y)
         if (panOnly) {
           this.viewer.viewport.panTo(
             new OpenSeadragon.Point(vpPos.x, vpPos.y),
@@ -160,20 +158,19 @@ function repositionElements(es, viewer) {
 }
 
 function repositionElement(e, viewer) {
+  const tiledImage = viewer.world.getItemAt(0)
   const newRect = viewer.viewport.viewportToViewerElementRectangle(
-    viewer.viewport.imageToViewportRectangle(e.rect)
+    tiledImage.imageToViewportRectangle(e.rect)
   )
   const point = viewer.viewport.getFlip()
     ? flipPoint(
         { x: e.rect.x, y: e.rect.y },
         viewer.viewport.getRotation(),
-        viewer.world
-          .getItemAt(0)
-          .viewportToImageCoordinates(viewer.viewport.getCenter(true))
+        tiledImage.viewportToImageCoordinates(viewer.viewport.getCenter(true))
       )
     : { x: e.rect.x, y: e.rect.y }
   const pos = viewer.viewport.viewportToViewerElementCoordinates(
-    viewer.viewport.imageToViewportCoordinates(point.x, point.y)
+    tiledImage.imageToViewportCoordinates(point.x, point.y)
   )
   e.element.style.left = pos.x - newRect.width / 2 + 'px'
   e.element.style.top = pos.y - newRect.height / 2 + 'px'
