@@ -159,6 +159,8 @@ function repositionElements(es, viewer) {
 
 function repositionElement(e, viewer) {
   const tiledImage = viewer.world.getItemAt(0)
+  if (!tiledImage) return
+
   const newRect = viewer.viewport.viewportToViewerElementRectangle(
     tiledImage.imageToViewportRectangle(e.rect)
   )
